@@ -15,7 +15,8 @@ module.exports = {
       network_id: 97,
       confirmations: 10,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+      // from: '0xE375D169F8f7bC18a544a6e5e546e63AD7511581'
     },
     bsc: {
       provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),
@@ -34,7 +35,31 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.5.16"
-    }
+      //https://forum.openzeppelin.com/t/how-to-deploy-uniswapv2-on-ganache/3885
+      version: "0.5.16",    // Fetch exact version from solc-bin (default: truffle's version)
+      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+      settings: {          // See the solidity docs for advice about optimization and evmVersion
+      optimizer: {
+        enabled: true,
+        runs: 999999
+      },
+      evmVersion: "istanbul", 
+      outputSelection: {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "evm.bytecode.object",
+            "evm.deployedBytecode.object",
+            "abi",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.sourceMap",
+            "metadata"
+          ]
+        },
+      }
+      }
+    },
   }
 }
