@@ -2,7 +2,7 @@
   "name": "ApeSwap-Core-Contracts",
   "description": "🎛 Core contracts for the ApeSwap protocol",
   "version": "0.1.0",
-  "homepage": "https://",
+  "homepage": "https://apeswap.finance",
   "repository": {
     "type": "git",
     "url": "https://github.com/ApeSwapFinance/apeswap-swap-core"
@@ -16,6 +16,7 @@
     "compile:truffle": "truffle compile",
     "migrate:testnet": "truffle migrate --reset --network testnet",
     "migrate:dev": "truffle migrate --reset --network development",
+    "flatten": "truffle-flattener ./contracts/PancakeFactory.sol --output ./PancakeFactory_flat.sol",
     "pretest": "yarn compile",
     "test": "mocha",
     "prepublishOnly": "yarn test"
