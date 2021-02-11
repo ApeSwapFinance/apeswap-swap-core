@@ -10,10 +10,10 @@ pragma solidity =0.5.16;
  * GitHub:          https://github.com/ApeSwapFinance
  */
 
-import './interfaces/IPancakeERC20.sol';
+import './interfaces/IApeERC20.sol';
 import './libraries/SafeMath.sol';
 
-contract PancakeERC20 is IPancakeERC20 {
+contract ApeERC20 is IApeERC20 {
     using SafeMath for uint;
 
     string public constant name = 'ApeSwapFinance LPs';
