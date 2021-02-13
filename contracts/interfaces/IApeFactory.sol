@@ -10,7 +10,7 @@ pragma solidity >=0.5.0;
  * GitHub:          https://github.com/ApeSwapFinance
  */
 
-interface IPancakeFactory {
+interface IApeFactory {
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
 
     function feeTo() external view returns (address);

@@ -10,7 +10,7 @@ pragma solidity >=0.5.0;
  * GitHub:          https://github.com/ApeSwapFinance
  */
 
-interface IPancakePair {
+interface IApePair {
     event Approval(address indexed owner, address indexed spender, uint value);
     event Transfer(address indexed from, address indexed to, uint value);
 
