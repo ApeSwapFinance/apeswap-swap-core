@@ -8,14 +8,16 @@
     "url": "https://github.com/ApeSwapFinance/apeswap-swap-core"
   },
   "scripts": {
+    "ganache": "npx ganache-cli",
     "lint": "yarn prettier ./test/*.ts --check",
     "lint:fix": "yarn prettier ./test/*.ts --write",
     "clean": "rimraf ./build/",
     "precompile": "yarn clean",
     "compile": "waffle .waffle.json",
     "compile:truffle": "truffle compile",
-    "migrate:testnet": "truffle migrate --reset --network testnet",
+    "migrate:testnet": "truffle migrate --network testnet",
     "migrate:dev": "truffle migrate --reset --network development",
+    "verify:testnet": "truffle run verify ApeFactory --network testnet",
     "flatten": "truffle-flattener ./contracts/ApeFactory.sol --output ./ApeFactory_flat.sol",
     "pretest": "yarn compile",
     "test": "mocha",
@@ -42,12 +44,13 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
     "solc": "0.5.16",
-    "truffle-plugin-verify": "^0.4.0",
+    "truffle-plugin-verify": "^0.5.7",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "truffle": "^5.1.41",
     "truffle-flattener": "^1.4.4",
     "truffle-hdwallet-provider": "^1.0.17"
