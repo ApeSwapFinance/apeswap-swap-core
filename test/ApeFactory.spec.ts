@@ -1,13 +1,15 @@
 import chai, { expect } from 'chai'
-import { Contract } from 'ethers'
-import { AddressZero } from 'ethers/constants'
-import { bigNumberify } from 'ethers/utils'
-import { solidity, MockProvider, createFixtureLoader } from 'ethereum-waffle'
+import { ecsign } from 'ethereumjs-util'
+import { expandTo18Decimals, getApprovalDigest } from './shared/utilities'
+import { solidity, MockProvider, loadFixture } from 'ethereum-waffle'
+import { Contract, BigNumber, constants, utils } from 'ethers'
+const { hexlify, keccak256, defaultAbiCoder, toUtf8Bytes,  } = utils;
+const {  AddressZero } = constants;
 
 import { getCreate2Address } from './shared/utilities'
 import { factoryFixture } from './shared/fixtures'
 
-import PancakePair from '../build/PancakePair.json'
+import ApePair from '../build/ApePair.json'
 
 chai.use(solidity)
 
@@ -16,14 +18,16 @@ const TEST_ADDRESSES: [string, string] = [
   '0x2000000000000000000000000000000000000000'
 ]
 
-describe('PancakeFactory', () => {
-  const provider = new MockProvider({
-    hardfork: 'istanbul',
-    mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
-    gasLimit: 9999999
+describe('ApeFactory', () => {
+  const provider = new MockProvider(
+    { 
+      ganacheOptions: {
+        hardfork: 'istanbul',
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
+        gasLimit: 9999999
+    }
   })
   const [wallet, other] = provider.getWallets()
-  const loadFixture = createFixtureLoader(provider, [wallet, other])
 
   let factory: Contract
   beforeEach(async () => {
@@ -38,11 +42,11 @@ describe('PancakeFactory', () => {
   })
 
   async function createPair(tokens: [string, string]) {
-    const bytecode = `0x${PancakePair.evm.bytecode.object}`
+    const bytecode = `0x${ApePair.bytecode}`
     const create2Address = getCreate2Address(factory.address, tokens, bytecode)
     await expect(factory.createPair(...tokens))
       .to.emit(factory, 'PairCreated')
-      .withArgs(TEST_ADDRESSES[0], TEST_ADDRESSES[1], create2Address, bigNumberify(1))
+      .withArgs(TEST_ADDRESSES[0], TEST_ADDRESSES[1], create2Address, BigNumber.from(1))
 
     await expect(factory.createPair(...tokens)).to.be.reverted // ApeSwap: PAIR_EXISTS
     await expect(factory.createPair(...tokens.slice().reverse())).to.be.reverted // ApeSwap: PAIR_EXISTS
@@ -51,7 +55,7 @@ describe('PancakeFactory', () => {
     expect(await factory.allPairs(0)).to.eq(create2Address)
     expect(await factory.allPairsLength()).to.eq(1)
 
-    const pair = new Contract(create2Address, JSON.stringify(PancakePair.abi), provider)
+    const pair = new Contract(create2Address, JSON.stringify(ApePair.abi), provider as any)
     expect(await pair.factory()).to.eq(factory.address)
     expect(await pair.token0()).to.eq(TEST_ADDRESSES[0])
     expect(await pair.token1()).to.eq(TEST_ADDRESSES[1])
