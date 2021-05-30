@@ -1,10 +1,14 @@
 const ApeFactory = artifacts.require("ApeFactory");
 
-module.exports = function (deployer, network, accounts) {
+module.exports = async function (deployer, network, accounts) {
   let currentAccount = accounts[0]
   if(network == 'testnet') {
     console.warn('WARNING: Using account[1] for testnet')
     currentAccount = accounts[1]
   }
-  deployer.deploy(ApeFactory, currentAccount, {from: currentAccount});
+  await deployer.deploy(ApeFactory, currentAccount, {from: currentAccount});
+
+  const apeFactory = await ApeFactory.deployed();
+  console.log(`INIT_CODE_PAIR_HASH: ${await apeFactory.INIT_CODE_PAIR_HASH()}`)
+
 };
