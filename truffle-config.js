@@ -1,8 +1,5 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 require('dotenv').config();
-
-const BSC_DEPLOYER_KEY = process.env.BSC_DEPLOYER_KEY;
-const BSC_TESTNET_DEPLOYER_KEY = process.env.BSC_TESTNET_DEPLOYER_KEY;
 
 module.exports = {
   networks: {
@@ -12,7 +9,7 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
     testnet: {
-      provider: () => new HDWalletProvider(BSC_TESTNET_DEPLOYER_KEY, `https://data-seed-prebsc-1-s1.binance.org:8545`, 0, 10),
+      provider: () => new HDWalletProvider(process.env.BSC_TESTNET_DEPLOYER_KEY, `https://data-seed-prebsc-1-s1.binance.org:8545`, 0, 10),
       network_id: 97,
       confirmations: 10,
       timeoutBlocks: 200,
@@ -20,9 +17,23 @@ module.exports = {
       from: '0xE375D169F8f7bC18a544a6e5e546e63AD7511581'
     },
     bsc: {
-      provider: () => new HDWalletProvider(BSC_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
+      provider: () => new HDWalletProvider(process.env.BSC_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
       network_id: 56,
-      confirmations: 10,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    matic: {
+      provider: () => new HDWalletProvider(process.env.POLYGON_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
+      network_id: 137,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    maticTestnet: {
+      provider: () => new HDWalletProvider(process.env.POLYGON_TESTNET_DEPLOYER_KEY, `https://rpc-mumbai.matic.today`),
+      network_id: 80001,
+      confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
