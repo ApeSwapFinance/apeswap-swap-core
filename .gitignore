@@ -3,3 +3,4 @@ build/
 .secret
 .secret-testnet
 .env
+.vscode
