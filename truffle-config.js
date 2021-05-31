@@ -23,14 +23,14 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    matic: {
+    polygon: {
       provider: () => new HDWalletProvider(process.env.POLYGON_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
       network_id: 137,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    maticTestnet: {
+    polygonTestnet: {
       provider: () => new HDWalletProvider(process.env.POLYGON_TESTNET_DEPLOYER_KEY, `https://rpc-mumbai.matic.today`),
       network_id: 80001,
       confirmations: 2,
