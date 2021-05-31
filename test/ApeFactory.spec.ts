@@ -1,15 +1,11 @@
 import chai, { expect } from 'chai'
-import { ecsign } from 'ethereumjs-util'
-import { expandTo18Decimals, getApprovalDigest } from './shared/utilities'
-import { solidity, MockProvider, loadFixture } from 'ethereum-waffle'
-import { Contract, BigNumber, constants, utils } from 'ethers'
-const { hexlify, keccak256, defaultAbiCoder, toUtf8Bytes,  } = utils;
-const {  AddressZero } = constants;
-
+import { solidity, MockProvider, createFixtureLoader } from 'ethereum-waffle'
+import { Contract, BigNumber, constants } from 'ethers'
 import { getCreate2Address } from './shared/utilities'
 import { factoryFixture } from './shared/fixtures'
-
 import ApePair from '../build/ApePair.json'
+
+const {  AddressZero } = constants;
 
 chai.use(solidity)
 
@@ -28,6 +24,7 @@ describe('ApeFactory', () => {
     }
   })
   const [wallet, other] = provider.getWallets()
+  const loadFixture = createFixtureLoader([wallet], provider)
 
   let factory: Contract
   beforeEach(async () => {
@@ -72,7 +69,7 @@ describe('ApeFactory', () => {
   it('createPair:gas', async () => {
     const tx = await factory.createPair(...TEST_ADDRESSES)
     const receipt = await tx.wait()
-    expect(receipt.gasUsed).to.eq(2509120)
+    expect(receipt.gasUsed).to.eq(2505099)
   })
 
   it('setFeeTo', async () => {

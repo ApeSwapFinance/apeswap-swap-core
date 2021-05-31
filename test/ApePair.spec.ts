@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai'
 import { Contract, BigNumber, constants, utils } from 'ethers'
-import { solidity, MockProvider, loadFixture } from 'ethereum-waffle'
+import { solidity, MockProvider, createFixtureLoader } from 'ethereum-waffle'
 
 const { getAddress, keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } = utils;
 
@@ -27,6 +27,7 @@ describe('ApePair', () => {
     }
   })
   const [wallet, other] = provider.getWallets()
+  const loadFixture = createFixtureLoader([wallet], provider)
 
   let factory: Contract
   let token0: Contract
@@ -275,12 +276,20 @@ describe('ApePair', () => {
     const expectedLiquidity = expandTo18Decimals(1000)
     await pair.transfer(pair.address, expectedLiquidity.sub(MINIMUM_LIQUIDITY))
     await pair.burn(wallet.address, overrides)
-    expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('374625795658571'))
-    expect(await pair.balanceOf(other.address)).to.eq('374625795658571')
+    // NOTE: Values for a 0.05% Protocol Fee
+    // expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('374625795658571'))
+    // expect(await pair.balanceOf(other.address)).to.eq('374625795658571')
+    // NOTE: Values for a 0.15% Protocol Fee
+    expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('1123878229043267'))
+    expect(await pair.balanceOf(other.address)).to.eq('1123878229043267')
 
     // using 1000 here instead of the symbolic MINIMUM_LIQUIDITY because the amounts only happen to be equal...
     // ...because the initial liquidity amounts were equal
-    expect(await token0.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('374252525546167'))
-    expect(await token1.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('375000280969452'))
+    // NOTE: Values for a 0.05% Protocol Fee
+    // expect(await token0.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('374252525546167'))
+    // expect(await token1.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('375000280969452'))
+    // NOTE: Values for a 0.15% Protocol Fee
+    expect(await token0.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('1122757576638504'))
+    expect(await token1.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('1125000842908357'))
   })
 })
