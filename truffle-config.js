@@ -23,7 +23,7 @@ module.exports = {
       skipDryRun: true
     },
     polygon: {
-      provider: () => new HDWalletProvider(process.env.POLYGON_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
+      provider: () => new HDWalletProvider(process.env.POLYGON_DEPLOYER_KEY, `https://rpc-mainnet.matic.network`),
       network_id: 137,
       confirmations: 2,
       timeoutBlocks: 200,
