@@ -13,6 +13,10 @@ pragma solidity =0.5.16;
 import './interfaces/IApeFactory.sol';
 import './ApePair.sol';
 
+interface ITokenName {
+    function name() external pure returns (string memory);
+}
+
 contract ApeFactory is IApeFactory {
     bytes32 public constant INIT_CODE_PAIR_HASH = keccak256(abi.encodePacked(type(ApePair).creationCode));
 
@@ -32,7 +36,19 @@ contract ApeFactory is IApeFactory {
         return allPairs.length;
     }
 
+    function concatenate(string memory s1, string memory s2) public pure returns (string memory) {
+        return string(abi.encodePacked("ApeSwap ", s1, "/", s2, " LP"));
+    }
+
     function createPair(address tokenA, address tokenB) external returns (address pair) {
+        pair = createPairInternal(tokenA, tokenB, true);
+    }
+
+    function createPairDefault(address tokenA, address tokenB) external returns (address pair) {
+        pair = createPairInternal(tokenA, tokenB, false);
+    }
+
+    function createPairInternal(address tokenA, address tokenB, bool includeTokenNames) internal returns (address pair) {
         require(tokenA != tokenB, 'ApeSwap: IDENTICAL_ADDRESSES');
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), 'ApeSwap: ZERO_ADDRESS');
@@ -42,7 +58,13 @@ contract ApeFactory is IApeFactory {
         assembly {
             pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
-        IApePair(pair).initialize(token0, token1);
+        if(includeTokenNames) {
+            string memory token0Name = ITokenName(token0).name();
+            string memory token1Name = ITokenName(token1).name();
+            IApePair(pair).initialize(token0, token1, concatenate(token0Name, token1Name));
+        } else {
+            IApePair(pair).initialize(token0, token1, "APE-LP");
+        }
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair; // populate mapping in the reverse direction
         allPairs.push(pair);

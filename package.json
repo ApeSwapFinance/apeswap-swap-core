@@ -16,6 +16,8 @@
     "compile": "waffle .waffle.json",
     "compile:truffle": "truffle compile",
     "migrate:bscTestnet": "truffle migrate --network bscTestnet",
+    "migrate:polygon": "truffle migrate --network polygon",
+    "migrate:polygonTestnet": "truffle migrate --network polygonTestnet",
     "migrate:dev": "truffle migrate --reset --network development",
     "flatten": "truffle-flattener ./contracts/ApeFactory.sol --output ./ApeFactory_flat.sol && truffle-flattener ./contracts/ApePair.sol --output ./ApePair_flat.sol",
     "verify:bscTestnet": "truffle run verify ApeFactory --network bscTestnet",

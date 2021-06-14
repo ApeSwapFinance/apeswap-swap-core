@@ -73,10 +73,11 @@ contract ApePair is IApePair, ApeERC20 {
     }
 
     // called once by the factory at time of deployment
-    function initialize(address _token0, address _token1) external {
+    function initialize(address _token0, address _token1, string memory _name) public {
         require(msg.sender == factory, 'ApeSwap: FORBIDDEN'); // sufficient check
         token0 = _token0;
         token1 = _token1;
+        name = _name;
     }
 
     // update reserves and, on the first call per block, price accumulators

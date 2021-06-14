@@ -16,7 +16,7 @@ import './libraries/SafeMath.sol';
 contract ApeERC20 is IApeERC20 {
     using SafeMath for uint;
 
-    string public constant name = 'ApeSwapFinance LPs';
+    string public name = 'ApeSwapFinance LPs';
     string public constant symbol = 'APE-LP';
     uint8 public constant decimals = 18;
     uint  public totalSupply;
