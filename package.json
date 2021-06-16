@@ -21,6 +21,8 @@
     "migrate:dev": "truffle migrate --reset --network development",
     "flatten": "truffle-flattener ./contracts/ApeFactory.sol --output ./ApeFactory_flat.sol && truffle-flattener ./contracts/ApePair.sol --output ./ApePair_flat.sol",
     "verify:bscTestnet": "truffle run verify ApeFactory --network bscTestnet",
+    "verify:polygonTestnet": "truffle run verify ApeFactory --network polygonTestnet",
+    "verify:polygon": "truffle run verify ApeFactory --network polygon",
     "pretest": "yarn compile",
     "test": "mocha",
     "prepublishOnly": "yarn test"
