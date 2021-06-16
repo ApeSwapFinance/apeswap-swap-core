@@ -41,8 +41,11 @@ module.exports = {
     'truffle-plugin-verify'
   ],
   api_keys: {
-    // Add BSCSCAN_API_KEY in .env file to verify contracts deployed through truffle
-    etherscan: process.env.BSCSCAN_API_KEY
+    etherscan: '',
+    bscscan: process.env.BSCSCAN_API_KEY,
+    polygonscan: process.env.POLYGONSCAN_API_KEY,
+    hecoinfo: '',
+    ftmscan: '',
   },
   // Set default mocha options here, use special reporters etc.
   mocha: {
