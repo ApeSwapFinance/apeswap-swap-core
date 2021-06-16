@@ -1,13 +1,15 @@
 import chai, { expect } from 'chai'
-import { Contract } from 'ethers'
+import { Contract, BigNumber, constants, utils } from 'ethers'
 import { solidity, MockProvider, createFixtureLoader } from 'ethereum-waffle'
-import { BigNumber, bigNumberify } from 'ethers/utils'
+
+const { getAddress, keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } = utils;
 
 import { expandTo18Decimals, mineBlock, encodePrice } from './shared/utilities'
 import { pairFixture } from './shared/fixtures'
-import { AddressZero } from 'ethers/constants'
 
-const MINIMUM_LIQUIDITY = bigNumberify(10).pow(3)
+const { AddressZero } = constants;
+
+const MINIMUM_LIQUIDITY = BigNumber.from('10').pow(3)
 
 chai.use(solidity)
 
@@ -15,14 +17,17 @@ const overrides = {
   gasLimit: 9999999
 }
 
-describe('PancakePair', () => {
-  const provider = new MockProvider({
-    hardfork: 'istanbul',
-    mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
-    gasLimit: 9999999
+describe('ApePair', () => {
+  const provider = new MockProvider(
+    { 
+      ganacheOptions: {
+        hardfork: 'istanbul',
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
+        gasLimit: 9999999
+    }
   })
   const [wallet, other] = provider.getWallets()
-  const loadFixture = createFixtureLoader(provider, [wallet])
+  const loadFixture = createFixtureLoader([wallet], provider)
 
   let factory: Contract
   let token0: Contract
@@ -77,7 +82,7 @@ describe('PancakePair', () => {
     [1, 10, 10, '907437715948354246'],
     [1, 100, 100, '988138378977801540'],
     [1, 1000, 1000, '997004989020957084']
-  ].map(a => a.map(n => (typeof n === 'string' ? bigNumberify(n) : expandTo18Decimals(n))))
+  ].map(a => a.map(n => (typeof n === 'string' ? BigNumber.from(n) : expandTo18Decimals(n))))
   swapTestCases.forEach((swapTestCase, i) => {
     it(`getInputPrice:${i}`, async () => {
       const [swapAmount, token0Amount, token1Amount, expectedOutputAmount] = swapTestCase
@@ -95,7 +100,7 @@ describe('PancakePair', () => {
     ['998000000000000000', 10, 5, 1],
     ['998000000000000000', 5, 5, 1],
     [1, 5, 5, '1002004008016032065'] // given amountOut, amountIn = ceiling(amountOut / .998)
-  ].map(a => a.map(n => (typeof n === 'string' ? bigNumberify(n) : expandTo18Decimals(n))))
+  ].map(a => a.map(n => (typeof n === 'string' ? BigNumber.from(n) : expandTo18Decimals(n))))
   optimisticTestCases.forEach((optimisticTestCase, i) => {
     it(`optimistic:${i}`, async () => {
       const [outputAmount, token0Amount, token1Amount, inputAmount] = optimisticTestCase
@@ -112,7 +117,7 @@ describe('PancakePair', () => {
     await addLiquidity(token0Amount, token1Amount)
 
     const swapAmount = expandTo18Decimals(1)
-    const expectedOutputAmount = bigNumberify('1662497915624478906')
+    const expectedOutputAmount = BigNumber.from('1662497915624478906')
     await token0.transfer(pair.address, swapAmount)
     await expect(pair.swap(0, expectedOutputAmount, wallet.address, '0x', overrides))
       .to.emit(token1, 'Transfer')
@@ -139,7 +144,7 @@ describe('PancakePair', () => {
     await addLiquidity(token0Amount, token1Amount)
 
     const swapAmount = expandTo18Decimals(1)
-    const expectedOutputAmount = bigNumberify('453305446940074565')
+    const expectedOutputAmount = BigNumber.from('453305446940074565')
     await token1.transfer(pair.address, swapAmount)
     await expect(pair.swap(expectedOutputAmount, 0, wallet.address, '0x', overrides))
       .to.emit(token0, 'Transfer')
@@ -170,7 +175,7 @@ describe('PancakePair', () => {
     await pair.sync(overrides)
 
     const swapAmount = expandTo18Decimals(1)
-    const expectedOutputAmount = bigNumberify('453305446940074565')
+    const expectedOutputAmount = BigNumber.from('453305446940074565')
     await token1.transfer(pair.address, swapAmount)
     await mineBlock(provider, (await provider.getBlock('latest')).timestamp + 1)
     const tx = await pair.swap(expectedOutputAmount, 0, wallet.address, '0x', overrides)
@@ -246,7 +251,7 @@ describe('PancakePair', () => {
     await addLiquidity(token0Amount, token1Amount)
 
     const swapAmount = expandTo18Decimals(1)
-    const expectedOutputAmount = bigNumberify('996006981039903216')
+    const expectedOutputAmount = BigNumber.from('996006981039903216')
     await token1.transfer(pair.address, swapAmount)
     await pair.swap(expectedOutputAmount, 0, wallet.address, '0x', overrides)
 
@@ -264,19 +269,27 @@ describe('PancakePair', () => {
     await addLiquidity(token0Amount, token1Amount)
 
     const swapAmount = expandTo18Decimals(1)
-    const expectedOutputAmount = bigNumberify('996006981039903216')
+    const expectedOutputAmount = BigNumber.from('996006981039903216')
     await token1.transfer(pair.address, swapAmount)
     await pair.swap(expectedOutputAmount, 0, wallet.address, '0x', overrides)
 
     const expectedLiquidity = expandTo18Decimals(1000)
     await pair.transfer(pair.address, expectedLiquidity.sub(MINIMUM_LIQUIDITY))
     await pair.burn(wallet.address, overrides)
-    expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('374625795658571'))
-    expect(await pair.balanceOf(other.address)).to.eq('374625795658571')
+    // NOTE: Values for a 0.05% Protocol Fee
+    // expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('374625795658571'))
+    // expect(await pair.balanceOf(other.address)).to.eq('374625795658571')
+    // NOTE: Values for a 0.15% Protocol Fee
+    expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY.add('1123878229043267'))
+    expect(await pair.balanceOf(other.address)).to.eq('1123878229043267')
 
     // using 1000 here instead of the symbolic MINIMUM_LIQUIDITY because the amounts only happen to be equal...
     // ...because the initial liquidity amounts were equal
-    expect(await token0.balanceOf(pair.address)).to.eq(bigNumberify(1000).add('374252525546167'))
-    expect(await token1.balanceOf(pair.address)).to.eq(bigNumberify(1000).add('375000280969452'))
+    // NOTE: Values for a 0.05% Protocol Fee
+    // expect(await token0.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('374252525546167'))
+    // expect(await token1.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('375000280969452'))
+    // NOTE: Values for a 0.15% Protocol Fee
+    expect(await token0.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('1122757576638504'))
+    expect(await token1.balanceOf(pair.address)).to.eq(BigNumber.from(1000).add('1125000842908357'))
   })
 })

@@ -1,11 +1,11 @@
 import chai, { expect } from 'chai'
-import { Contract } from 'ethers'
-import { MaxUint256 } from 'ethers/constants'
-import { bigNumberify, hexlify, keccak256, defaultAbiCoder, toUtf8Bytes } from 'ethers/utils'
-import { solidity, MockProvider, deployContract } from 'ethereum-waffle'
 import { ecsign } from 'ethereumjs-util'
-
 import { expandTo18Decimals, getApprovalDigest } from './shared/utilities'
+import { solidity, MockProvider, deployContract } from 'ethereum-waffle'
+import { Contract, BigNumber, constants, utils } from 'ethers'
+const { hexlify, keccak256, defaultAbiCoder, toUtf8Bytes,  } = utils;
+const {  MaxUint256 } = constants;
+
 
 import ERC20 from '../build/ERC20.json'
 
@@ -14,11 +14,14 @@ chai.use(solidity)
 const TOTAL_SUPPLY = expandTo18Decimals(10000)
 const TEST_AMOUNT = expandTo18Decimals(10)
 
-describe('PancakeERC20', () => {
-  const provider = new MockProvider({
-    hardfork: 'istanbul',
-    mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
-    gasLimit: 9999999
+describe('ApeERC20', () => {
+  const provider = new MockProvider(
+    { 
+      ganacheOptions: {
+        hardfork: 'istanbul',
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
+        gasLimit: 9999999
+    }
   })
   const [wallet, other] = provider.getWallets()
 
@@ -29,8 +32,8 @@ describe('PancakeERC20', () => {
 
   it('name, symbol, decimals, totalSupply, balanceOf, DOMAIN_SEPARATOR, PERMIT_TYPEHASH', async () => {
     const name = await token.name()
-    expect(name).to.eq('Pancake LPs')
-    expect(await token.symbol()).to.eq('Cake-LP')
+    expect(name).to.eq('ApeSwapFinance LPs')
+    expect(await token.symbol()).to.eq('APE-LP')
     expect(await token.decimals()).to.eq(18)
     expect(await token.totalSupply()).to.eq(TOTAL_SUPPLY)
     expect(await token.balanceOf(wallet.address)).to.eq(TOTAL_SUPPLY)
@@ -111,6 +114,6 @@ describe('PancakeERC20', () => {
       .to.emit(token, 'Approval')
       .withArgs(wallet.address, other.address, TEST_AMOUNT)
     expect(await token.allowance(wallet.address, other.address)).to.eq(TEST_AMOUNT)
-    expect(await token.nonces(wallet.address)).to.eq(bigNumberify(1))
+    expect(await token.nonces(wallet.address)).to.eq(BigNumber.from(1))
   })
 })

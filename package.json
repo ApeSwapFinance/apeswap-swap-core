@@ -15,10 +15,10 @@
     "precompile": "yarn clean",
     "compile": "waffle .waffle.json",
     "compile:truffle": "truffle compile",
-    "migrate:testnet": "truffle migrate --network testnet",
+    "migrate:bscTestnet": "truffle migrate --network bscTestnet",
     "migrate:dev": "truffle migrate --reset --network development",
     "flatten": "truffle-flattener ./contracts/ApeFactory.sol --output ./ApeFactory_flat.sol && truffle-flattener ./contracts/ApePair.sol --output ./ApePair_flat.sol",
-    "verify:testnet": "truffle run verify ApeFactory --network testnet",
+    "verify:bscTestnet": "truffle run verify ApeFactory --network bscTestnet",
     "pretest": "yarn compile",
     "test": "mocha",
     "prepublishOnly": "yarn test"
@@ -37,7 +37,7 @@
     "@types/chai": "^4.2.6",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
-    "ethereum-waffle": "^2.4.1",
+    "ethereum-waffle": "^3.3.0",
     "ethereumjs-util": "^6.2.0",
     "ethers": "^5.0.29",
     "mocha": "^6.2.2",
@@ -50,9 +50,9 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@truffle/hdwallet-provider": "^1.4.0",
     "dotenv": "^8.2.0",
     "truffle": "^5.1.41",
-    "truffle-flattener": "^1.4.4",
-    "truffle-hdwallet-provider": "^1.0.17"
+    "truffle-flattener": "^1.4.4"
   }
 }

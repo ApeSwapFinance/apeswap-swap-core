@@ -1,10 +1,11 @@
 const ApeFactory = artifacts.require("ApeFactory");
+const { getNetworkConfig } = require('../migration-config');
 
-module.exports = function (deployer, network, accounts) {
-  let currentAccount = accounts[0]
-  if(network == 'testnet') {
-    console.warn('WARNING: Using account[1] for testnet')
-    currentAccount = accounts[1]
-  }
-  deployer.deploy(ApeFactory, currentAccount, {from: currentAccount});
+module.exports = async function (deployer, network, accounts) {
+  const { feeToSetterAddress } = getNetworkConfig(network, accounts);
+  await deployer.deploy(ApeFactory, feeToSetterAddress);
+
+  const apeFactory = await ApeFactory.deployed();
+  console.log(`INIT_CODE_PAIR_HASH: ${await apeFactory.INIT_CODE_PAIR_HASH()}`)
+
 };

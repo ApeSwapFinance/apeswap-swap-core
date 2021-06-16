@@ -1,0 +1,29 @@
+name: Test Contracts
+
+on: push
+
+jobs:
+  run-linters:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install global yarn
+        run: npm install -g yarn
+
+      - name: Install Node dependencies
+        run: yarn install
+
+      - name: Run unit tests
+        run: yarn test
