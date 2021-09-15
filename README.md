@@ -1,8 +1,7 @@
 # Ape Factory
 [![Test Contracts](https://github.com/ApeSwapFinance/apeswap-swap-core/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/ApeSwapFinance/apeswap-swap-core/actions/workflows/test-contracts.yml)
 
-
-In-depth documentation on ApeSwap is available at https://obiedobo.gitbook.io/apeswap-finance
+In-depth documentation on ApeSwap is available at [apeswap docs](https://apeswap.gitbook.io/apeswap-finance/).
 
 # Local Development
 
