@@ -1,6 +1,6 @@
 # Ape Factory
 
-In-depth documentation on PancakeSwap is available at [docs.pancakeswap.finance](https://docs.pancakeswap.finance/).
+In-depth documentation on PancakeSwap is available at [apeswap docs](https://apeswap.gitbook.io/apeswap-finance/).
 
 # Local Development
 
