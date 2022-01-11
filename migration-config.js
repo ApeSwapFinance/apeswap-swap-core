@@ -2,7 +2,7 @@ function getNetworkConfig(network, accounts) {
     if(["bsc", "bsc-fork"].includes(network)) {
         console.log(`Deploying with ${network} config.`)
         return {
-            feeToSetterAddress: '0x6c905b4108A87499CEd1E0498721F2B831c6Ab13',
+            feeToSetterAddress: '0x7b26A27af246b4E482f37eF24e9a3f83c3FC7f1C', // BSC GSafe Secure Admin
         }
     } else if (['bscTestnet', 'bscTestnet-fork'].includes(network)) {
         console.log(`Deploying with ${network} config.`)
@@ -17,7 +17,7 @@ function getNetworkConfig(network, accounts) {
     } else if (['polygon', 'polygon-fork'].includes(network)) {
         console.log(`Deploying with ${network} config.`)
         return {
-            feeToSetterAddress: '0x6c905b4108A87499CEd1E0498721F2B831c6Ab13',
+            feeToSetterAddress: '0x2C5fD64A3e27826CAf1A3d0F1bE6f8ED9f8a4f8A', // Polygon GSafe General Admin
         }
     } else if (['polygonTestnet', 'polygonTestnet-fork'].includes(network)) {
         console.log(`Deploying with ${network} config.`)
