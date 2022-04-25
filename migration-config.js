@@ -1,5 +1,5 @@
 function getNetworkConfig(network, accounts) {
-    if(["bsc", "bsc-fork"].includes(network)) {
+    if (["bsc", "bsc-fork"].includes(network)) {
         console.log(`Deploying with ${network} config.`)
         return {
             feeToSetterAddress: '0x7b26A27af246b4E482f37eF24e9a3f83c3FC7f1C', // BSC GSafe Secure Admin
@@ -7,7 +7,7 @@ function getNetworkConfig(network, accounts) {
     } else if (['bscTestnet', 'bscTestnet-fork'].includes(network)) {
         console.log(`Deploying with ${network} config.`)
         return {
-            feeToSetterAddress: '0xE375D169F8f7bC18a544a6e5e546e63AD7511581',
+            feeToSetterAddress: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
         }
     } else if (['development'].includes(network)) {
         console.log(`Deploying with ${network} config.`)
@@ -23,6 +23,16 @@ function getNetworkConfig(network, accounts) {
         console.log(`Deploying with ${network} config.`)
         return {
             feeToSetterAddress: '0xE375D169F8f7bC18a544a6e5e546e63AD7511581',
+        }
+    } else if (['eth', 'ethereum'].includes(network)) {
+        console.log(`Deploying with ${network} config.`)
+        return {
+            feeToSetterAddress: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
+        }
+    } else if (['ropsten'].includes(network)) {
+        console.log(`Deploying with ${network} config.`)
+        return {
+            feeToSetterAddress: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
         }
     } else {
         throw new Error(`No config found for network ${network}.`)
