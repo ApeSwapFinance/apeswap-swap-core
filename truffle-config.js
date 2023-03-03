@@ -9,42 +9,42 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
     bscTestnet: {
-      provider: () => new HDWalletProvider(process.env.BSC_TESTNET_DEPLOYER_KEY, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+      provider: () => new HDWalletProvider(process.env.TESTNET_DEPLOYER_KEY, `https://data-seed-prebsc-1-s1.binance.org:8545`),
       network_id: 97,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true,
     },
     bsc: {
-      provider: () => new HDWalletProvider(process.env.BSC_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
+      provider: () => new HDWalletProvider(process.env.MAINNET_DEPLOYER_KEY, `https://bsc-dataseed1.binance.org`),
       network_id: 56,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
     polygon: {
-      provider: () => new HDWalletProvider(process.env.POLYGON_DEPLOYER_KEY, `https://rpc-mainnet.matic.network`),
+      provider: () => new HDWalletProvider(process.env.MAINNET_DEPLOYER_KEY, `https://rpc-mainnet.matic.network`),
       network_id: 137,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
     polygonTestnet: {
-      provider: () => new HDWalletProvider(process.env.POLYGON_TESTNET_DEPLOYER_KEY, `https://rpc-mumbai.matic.today`),
+      provider: () => new HDWalletProvider(process.env.TESTNET_DEPLOYER_KEY, `https://rpc-mumbai.matic.today`),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
     eth: {
-      provider: () => new HDWalletProvider(process.env.ETH_DEPLOYER_KEY, `https://rpc.ankr.com/eth`),
+      provider: () => new HDWalletProvider(process.env.MAINNET_DEPLOYER_KEY, `https://rpc.ankr.com/eth`),
       network_id: 1,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     },
     ropsten: {
-      provider: () => new HDWalletProvider(process.env.ROPSTEN_DEPLOYER_KEY, process.env.ROPSTEN_RPC),
+      provider: () => new HDWalletProvider(process.env.TESTNET_DEPLOYER_KEY, process.env.ROPSTEN_RPC),
       network_id: 3,
       confirmations: 2,
       timeoutBlocks: 200,
