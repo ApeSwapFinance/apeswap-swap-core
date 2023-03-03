@@ -50,6 +50,13 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
+    arbitrum: {
+      provider: () => new HDWalletProvider(process.env.MAINNET_DEPLOYER_KEY, `https://arbitrum.blockpi.network/v1/rpc/public`),
+      network_id: 42161,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: false
+    },
   },
   plugins: [
     'truffle-plugin-verify'
@@ -58,6 +65,7 @@ module.exports = {
     etherscan: process.env.ETHERSCAN_API_KEY,
     bscscan: process.env.BSCSCAN_API_KEY,
     polygonscan: process.env.POLYGONSCAN_API_KEY,
+    arbiscan: process.env.ARBISCAN_API_KEY,
     hecoinfo: '',
     ftmscan: '',
   },

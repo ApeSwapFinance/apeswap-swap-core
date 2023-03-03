@@ -34,6 +34,11 @@ function getNetworkConfig(network, accounts) {
         return {
             feeToSetterAddress: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
         }
+    } else if (['arbitrum', 'arbitrum-fork'].includes(network)) {
+        console.log(`Deploying with ${network} config.`)
+        return {
+            feeToSetterAddress: '0x8Ad7E08f1c7d4e37574e7Fe4478C174AbcAc4B61', // Arbitrum GSafe General Admin
+        }
     } else {
         throw new Error(`No config found for network ${network}.`)
     }
